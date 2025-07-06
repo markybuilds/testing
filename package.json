@@ -10,7 +10,7 @@
     "build:main": "tsc -p tsconfig.main.json",
     "build:renderer": "vite build",
     "build:watch": "concurrently \"npm run build:main -- --watch\" \"vite build --watch\"",
-    "electron:dev": "wait-on dist/main.js && electron .",
+    "electron:dev": "wait-on dist/main/main.js && electron .",
     "prepackage": "npm run clean && npm run build",
     "package": "electron-builder --config electron-builder.config.js",
     "package:all": "electron-builder --config electron-builder.config.js --win --mac --linux",

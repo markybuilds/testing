@@ -27,12 +27,16 @@ let duplicateDetectionHandler: DuplicateDetectionHandler | null = null;
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 function createWindow(): void {
+  console.log('Creating main window...');
+  
   // Create the browser window
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     minWidth: 1000,
     minHeight: 600,
+    x: 100,
+    y: 100,
     show: false,
     icon: join(__dirname, '../../assets/icon.png'),
     webPreferences: {
@@ -41,21 +45,32 @@ function createWindow(): void {
       preload: join(__dirname, 'preload.js'),
       webSecurity: !isDevelopment
     },
-    titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default'
+    titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
+    // Linux-specific window settings
+    skipTaskbar: false,
+    resizable: true,
+    title: 'YouTube Playlist Manager'
   });
+
+  console.log('Window created, isDevelopment:', isDevelopment);
 
   // Load the app
   if (isDevelopment) {
+    console.log('Loading development URL: http://localhost:3000');
     mainWindow.loadURL('http://localhost:3000');
-    mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
+    const rendererPath = join(__dirname, '../renderer/index.html');
+    console.log('Loading production file:', rendererPath);
+    mainWindow.loadFile(rendererPath);
   }
 
   // Show window when ready to prevent visual flash
   mainWindow.once('ready-to-show', () => {
+    console.log('Window ready-to-show event fired');
     if (mainWindow) {
       mainWindow.show();
+      mainWindow.focus();
+      console.log('Main window shown and focused');
       
       if (isDevelopment) {
         mainWindow.webContents.openDevTools();
@@ -63,7 +78,12 @@ function createWindow(): void {
     }
   });
 
+  mainWindow.on('show', () => {
+    console.log('Main window show event fired');
+  });
+
   mainWindow.on('closed', () => {
+    console.log('Main window closed');
     mainWindow = null;
   });
 }
