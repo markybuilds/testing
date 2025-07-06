@@ -1,0 +1,475 @@
+/* Duplicate Manager Styles */
+.duplicate-modal {
+    z-index: 1001;
+}
+
+.duplicate-modal-content {
+    max-width: 1200px;
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Stats Section */
+.duplicate-stats-section {
+    margin-bottom: 24px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Controls Section */
+.duplicate-controls {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.control-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.control-group .btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-icon {
+    font-size: 16px;
+}
+
+.scan-options h4 {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+.option-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.option-label input[type="checkbox"] {
+    margin: 0;
+}
+
+.option-label input[type="range"] {
+    margin: 0 8px;
+    flex: 1;
+    max-width: 200px;
+}
+
+/* Scan Progress */
+.scan-progress {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.scan-progress.hidden {
+    display: none;
+}
+
+.progress-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.progress-header h4 {
+    margin: 0;
+    color: var(--text-color);
+}
+
+.progress-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-top: 2px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.progress-bar {
+    background: var(--background-color);
+    border-radius: 4px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+    height: 100%;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.progress-text {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* Duplicate Groups Section */
+.duplicate-groups-section {
+    margin-bottom: 24px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.section-header h4 {
+    margin: 0;
+    color: var(--text-color);
+}
+
+.group-filters {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.group-filters select {
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--card-bg);
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+/* Duplicate Groups List */
+.duplicate-groups-list {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.no-duplicates-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+}
+
+.no-duplicates-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.no-duplicates-message h3 {
+    margin: 0 0 8px 0;
+    color: var(--text-color);
+}
+
+.no-duplicates-message p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Duplicate Group */
+.duplicate-group {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: var(--background-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.detection-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.detection-icon {
+    font-size: 18px;
+}
+
+.detection-method {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.similarity-badge {
+    background: var(--primary-color);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.group-actions .btn {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.expand-icon {
+    margin-right: 4px;
+}
+
+/* Video Items */
+.original-video,
+.duplicate-item {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.original-video:last-child,
+.duplicate-item:last-child {
+    border-bottom: none;
+}
+
+.video-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.video-info {
+    flex: 1;
+}
+
+.video-title {
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+.video-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+}
+
+.playlist-name {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.video-url {
+    font-family: 'Courier New', monospace;
+    word-break: break-all;
+}
+
+/* Duplicate Item Layout */
+.duplicate-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.resolution-controls {
+    flex-shrink: 0;
+    min-width: 180px;
+}
+
+.resolution-select {
+    width: 100%;
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--card-bg);
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.duplicates-list {
+    background: var(--background-color);
+}
+
+.duplicates-list .video-label {
+    padding: 12px 16px 0 16px;
+    margin-bottom: 0;
+}
+
+/* Duplicate Warning Modal */
+.duplicate-warning-modal .modal-content {
+    max-width: 600px;
+}
+
+.duplicate-warning-modal .modal-header h3 {
+    color: var(--warning-color);
+}
+
+.suggestions-list {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin: 16px 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-title {
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 4px;
+}
+
+.suggestion-playlist {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.warning-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .duplicate-modal-content {
+        width: 98%;
+        margin: 1% auto;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .control-group {
+        flex-direction: column;
+    }
+    
+    .control-group .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .group-filters {
+        width: 100%;
+    }
+    
+    .group-filters select {
+        flex: 1;
+    }
+    
+    .group-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    
+    .duplicate-item {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .resolution-controls {
+        min-width: auto;
+    }
+    
+    .video-meta {
+        flex-direction: column;
+        gap: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .duplicate-modal-content {
+        padding: 16px;
+    }
+    
+    .option-label input[type="range"] {
+        max-width: 120px;
+    }
+}

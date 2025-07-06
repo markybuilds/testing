@@ -1,0 +1,91 @@
+name: Development Build
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Build application
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: development-build
+          path: |
+            dist/
+          retention-days: 7
+
+  build-preview:
+    needs: test
+    runs-on: ${{ matrix.os }}
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install native dependencies (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libnss3-dev libatk-bridge2.0-dev libdrm2-dev libxcomposite-dev libxdamage-dev libxrandr-dev libgbm-dev libxss-dev libasound2-dev
+
+      - name: Build application
+        run: npm run build
+
+      - name: Package application
+        run: |
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            npm run package:win
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+            npm run package:mac
+          else
+            npm run package:linux-appimage
+          fi
+        shell: bash
+
+      - name: Upload preview build
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-${{ matrix.os }}
+          path: |
+            dist-packages/*
+          retention-days: 14

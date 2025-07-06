@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Playlist Manager</title>
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="./styles/quality-selection.css">
+    <link rel="stylesheet" href="./styles/playlist-management.css">
+    <link rel="stylesheet" href="./styles/search-filter.css">
+    <link rel="stylesheet" href="./styles/ffmpeg-conversion.css">
+    <link rel="stylesheet" href="./styles/batch-download.css">
+    <link rel="stylesheet" href="./styles/video-preview.css">
+    <link rel="stylesheet" href="./styles/offline-video.css">
+    <link rel="stylesheet" href="./styles/playlist-export.css">
+    <link rel="stylesheet" href="./styles/error-handling.css">
+    <link rel="stylesheet" href="./styles/component-updates.css">
+    <link rel="stylesheet" href="./styles/duplicate-manager.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1>YouTube Playlist Manager</h1>
+            </div>
+            <div class="nav-links">
+                <button class="nav-btn active" data-page="import">Import</button>
+                <button class="nav-btn" data-page="playlists">My Playlists</button>
+                <button class="nav-btn" data-page="downloads">Downloads</button>
+                <button class="nav-btn" data-page="conversion">Conversion</button>
+                <button class="nav-btn" data-page="settings">Settings</button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Import Page -->
+            <div id="import-page" class="page active">
+                <div class="page-header">
+                    <h2>Import YouTube Playlist</h2>
+                    <p>Enter a YouTube playlist URL to import videos to your local collection</p>
+                </div>
+                
+                <div class="import-form">
+                    <div class="input-group">
+                        <input type="url" id="playlist-url" placeholder="https://www.youtube.com/playlist?list=..." />
+                        <button id="import-btn" class="btn btn-primary">Import Playlist</button>
+                    </div>
+                    <div id="import-status" class="status-message"></div>
+                </div>
+
+                <div class="create-playlist-section">
+                    <h3>Or Create Custom Playlist</h3>
+                    <div class="input-group">
+                        <input type="text" id="new-playlist-name" placeholder="Enter playlist name..." />
+                        <button id="create-playlist-btn" class="btn btn-secondary">Create Playlist</button>
+                    </div>
+                    <button id="advanced-create-btn" class="btn btn-outline">Advanced Options</button>
+                </div>
+            </div>
+
+            <!-- My Playlists Page -->
+            <div id="playlists-page" class="page">
+                <div class="page-header">
+                    <h2>My Playlists</h2>
+                    <div class="playlists-controls">
+                        <div class="search-and-filter">
+                            <div class="search-bar">
+                                <input type="text" id="playlist-search" placeholder="Search playlists..." />
+                                <button id="clear-search-btn" class="btn btn-icon" title="Clear search">×</button>
+                            </div>
+                            <div class="filter-controls">
+                                <select id="category-filter">
+                                    <option value="">All Categories</option>
+                                    <option value="music">Music</option>
+                                    <option value="education">Education</option>
+                                    <option value="entertainment">Entertainment</option>
+                                    <option value="gaming">Gaming</option>
+                                    <option value="sports">Sports</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="cooking">Cooking</option>
+                                    <option value="travel">Travel</option>
+                                    <option value="fitness">Fitness</option>
+                                    <option value="diy">DIY</option>
+                                    <option value="other">Other</option>
+                                    <option value="uncategorized">Uncategorized</option>
+                                </select>
+                                <select id="source-filter">
+                                    <option value="">All Sources</option>
+                                    <option value="youtube">YouTube</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                                <select id="sort-by">
+                                    <option value="updated_desc">Recently Updated</option>
+                                    <option value="created_desc">Recently Created</option>
+                                    <option value="title_asc">Title A-Z</option>
+                                    <option value="title_desc">Title Z-A</option>
+                                    <option value="videos_desc">Most Videos</option>
+                                    <option value="videos_asc">Fewest Videos</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="view-controls">
+                            <div class="view-toggle">
+                                <button id="grid-view-btn" class="btn btn-icon active" title="Grid View">⋮⋮⋮</button>
+                                <button id="list-view-btn" class="btn btn-icon" title="List View">☰</button>
+                            </div>
+                            <button id="batch-download-btn" class="btn btn-secondary">Batch Download</button>
+                            <button id="export-playlists-btn" class="btn btn-secondary">📤 Export</button>
+                            <button id="duplicate-manager-btn" class="btn btn-secondary">🔍 Duplicate Manager</button>
+                            <button id="create-playlist-header-btn" class="btn btn-primary">Create Playlist</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="playlists-stats">
+                    <div class="stats-item">
+                        <span id="total-playlists">0</span>
+                        <label>Total Playlists</label>
+                    </div>
+                    <div class="stats-item">
+                        <span id="total-videos">0</span>
+                        <label>Total Videos</label>
+                    </div>
+                    <div class="stats-item">
+                        <span id="youtube-playlists">0</span>
+                        <label>YouTube Imports</label>
+                    </div>
+                    <div class="stats-item">
+                        <span id="custom-playlists">0</span>
+                        <label>Custom Playlists</label>
+                    </div>
+                </div>
+                
+                <div id="playlists-container" class="playlists-container">
+                    <div id="playlists-grid" class="playlists-grid view-grid">
+                        <!-- Playlists will be dynamically populated here -->
+                    </div>
+                </div>
+                
+                <!-- Batch Download Section -->
+                <div id="batch-download-section" class="batch-download-section" style="display: none;">
+                    <div class="batch-download-header">
+                        <h3 class="batch-download-title">Batch Download Manager</h3>
+                        <button id="close-batch-section" class="btn btn-outline">Close</button>
+                    </div>
+                    
+                    <!-- Batch Configuration -->
+                    <div class="batch-config">
+                        <div class="batch-config-group">
+                            <h4 class="batch-config-title">📋 Download Settings</h4>
+                            
+                            <div class="batch-option">
+                                <label class="batch-label">Video Quality:</label>
+                                <select id="batch-quality" class="batch-select">
+                                    <option value="best">Best Available</option>
+                                    <option value="1080p">1080p</option>
+                                    <option value="720p">720p</option>
+                                    <option value="480p">480p</option>
+                                    <option value="360p">360p</option>
+                                </select>
+                            </div>
+                            
+                            <div class="batch-option">
+                                <label class="batch-label">Format:</label>
+                                <select id="batch-format" class="batch-select">
+                                    <option value="mp4">MP4</option>
+                                    <option value="webm">WebM</option>
+                                    <option value="mkv">MKV</option>
+                                </select>
+                            </div>
+                            
+                            <div class="batch-checkbox-option">
+                                <input type="checkbox" id="batch-audio-only" class="batch-checkbox">
+                                <label for="batch-audio-only" class="batch-checkbox-label">Audio Only</label>
+                            </div>
+                            
+                            <div class="batch-checkbox-option">
+                                <input type="checkbox" id="batch-subtitles" class="batch-checkbox">
+                                <label for="batch-subtitles" class="batch-checkbox-label">Download Subtitles</label>
+                            </div>
+                        </div>
+                        
+                        <div class="batch-config-group">
+                            <h4 class="batch-config-title">⚙️ Advanced Options</h4>
+                            
+                            <div class="batch-option">
+                                <label class="batch-label">Concurrent Downloads:</label>
+                                <select id="batch-concurrent" class="batch-select">
+                                    <option value="1">1 (Slow/Stable)</option>
+                                    <option value="2">2 (Balanced)</option>
+                                    <option value="3" selected>3 (Recommended)</option>
+                                    <option value="4">4 (Fast)</option>
+                                    <option value="5">5 (Very Fast)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="batch-option">
+                                <label class="batch-label">Download Path:</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="text" id="batch-download-path" class="batch-input" placeholder="Select download directory..." readonly>
+                                    <button id="batch-browse-path" class="btn btn-outline" style="padding: 8px 12px; font-size: 0.8rem;">Browse</button>
+                                </div>
+                                <small class="batch-help-text">Leave empty to use default downloads folder</small>
+                            </div>
+                            
+                            <div class="batch-checkbox-option">
+                                <input type="checkbox" id="batch-skip-existing" class="batch-checkbox" checked>
+                                <label for="batch-skip-existing" class="batch-checkbox-label">Skip Existing Files</label>
+                            </div>
+                            
+                            <div class="batch-checkbox-option">
+                                <input type="checkbox" id="batch-organize-folders" class="batch-checkbox" checked>
+                                <label for="batch-organize-folders" class="batch-checkbox-label">Organize in Playlist Folders</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Selected Playlists for Batch Download -->
+                    <div id="selected-playlists-section" class="selected-playlists-section" style="display: none;">
+                        <h4>Selected Playlists for Batch Download:</h4>
+                        <div id="selected-playlists-list" class="selected-playlists-list">
+                            <!-- Selected playlists will be shown here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Batch Actions -->
+                    <div class="batch-actions">
+                        <button id="configure-batch-btn" class="batch-action-btn configure-batch-btn">
+                            ⚙️ Advanced Settings
+                        </button>
+                        <button id="clear-batch-btn" class="batch-action-btn clear-batch-btn">
+                            🗑️ Clear Selection
+                        </button>
+                        <button id="start-batch-btn" class="batch-action-btn start-batch-btn" disabled>
+                            ▶️ Start Batch Download
+                        </button>
+                    </div>
+                    
+                    <!-- Active Batch Downloads -->
+                    <div class="active-batches">
+                        <div class="active-batches-header">
+                            <h4 class="active-batches-title">Active Downloads</h4>
+                            <div class="batch-stats">
+                                <div class="batch-stat">
+                                    <span>Total:</span>
+                                    <span id="batch-total-count">0</span>
+                                </div>
+                                <div class="batch-stat">
+                                    <span>Active:</span>
+                                    <span id="batch-active-count">0</span>
+                                </div>
+                                <div class="batch-stat">
+                                    <span>Completed:</span>
+                                    <span id="batch-completed-count">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="batch-items-container" class="batch-items">
+                            <div class="batch-empty">
+                                <div class="batch-empty-icon">📦</div>
+                                <div class="batch-empty-text">No batch downloads active</div>
+                                <div class="batch-empty-hint">Select playlists and start a batch download to see progress here</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Floating Add Video Button -->
+                <button id="floating-add-video-btn" class="floating-add-btn" title="Add Video to Playlist">
+                    +
+                </button>
+            </div>
+
+            <!-- Downloads Page -->
+            <div id="downloads-page" class="page">
+                <div class="page-header">
+                    <h2>Download Queue</h2>
+                    <div class="download-controls">
+                        <button id="pause-all-btn" class="btn btn-secondary">Pause All</button>
+                        <button id="resume-all-btn" class="btn btn-secondary">Resume All</button>
+                        <button id="clear-completed-btn" class="btn btn-secondary">Clear Completed</button>
+                        <button id="open-offline-library-btn" class="btn btn-primary">📁 Offline Library</button>
+                    </div>
+                </div>
+                
+                <div class="download-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Total:</span>
+                        <span id="stats-total" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Downloading:</span>
+                        <span id="stats-downloading" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Completed:</span>
+                        <span id="stats-completed" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Failed:</span>
+                        <span id="stats-failed" class="stat-value">0</span>
+                    </div>
+                </div>
+                
+                <div class="download-filters">
+                    <select id="download-status-filter">
+                        <option value="all">All Downloads</option>
+                        <option value="pending">Pending</option>
+                        <option value="downloading">Downloading</option>
+                        <option value="paused">Paused</option>
+                        <option value="completed">Completed</option>
+                        <option value="failed">Failed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                
+                <!-- Offline Video Library Section -->
+                <div id="offline-library-section" class="offline-video-library" style="display: none;">
+                    <h3>📂 Offline Video Library</h3>
+                    
+                    <div class="offline-video-stats">
+                        <div class="stat-card">
+                            <span id="offline-total-videos" class="stat-number">0</span>
+                            <span class="stat-label">Videos Available</span>
+                        </div>
+                        <div class="stat-card">
+                            <span id="offline-total-size" class="stat-number">0 GB</span>
+                            <span class="stat-label">Total Size</span>
+                        </div>
+                        <div class="stat-card">
+                            <span id="offline-recently-watched" class="stat-number">0</span>
+                            <span class="stat-label">Recently Watched</span>
+                        </div>
+                        <div class="stat-card">
+                            <span id="offline-bookmarked" class="stat-number">0</span>
+                            <span class="stat-label">Bookmarked</span>
+                        </div>
+                    </div>
+                    
+                    <div class="offline-video-filters">
+                        <input type="search" id="offline-video-search" placeholder="Search offline videos...">
+                        <select id="offline-format-filter" class="filter-dropdown">
+                            <option value="">All Formats</option>
+                            <option value="mp4">MP4</option>
+                            <option value="mkv">MKV</option>
+                            <option value="webm">WebM</option>
+                            <option value="avi">AVI</option>
+                            <option value="mov">MOV</option>
+                        </select>
+                        <select id="offline-sort-filter" class="filter-dropdown">
+                            <option value="recent">Recently Added</option>
+                            <option value="alphabetical">Alphabetical</option>
+                            <option value="duration">Duration</option>
+                            <option value="size">File Size</option>
+                            <option value="watched">Most Watched</option>
+                        </select>
+                        <button id="refresh-offline-library-btn" class="btn btn-outline">🔄 Refresh</button>
+                    </div>
+                    
+                    <div class="recently-watched">
+                        <h4>Recently Watched</h4>
+                        <div id="recently-watched-list" class="recently-watched-list">
+                            <!-- Recently watched videos will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div id="offline-videos-grid" class="offline-videos-grid">
+                        <!-- Offline videos will be populated here -->
+                    </div>
+                </div>
+                
+                <div id="download-queue" class="download-queue">
+                    <!-- Download items will be dynamically populated here -->
+                </div>
+            </div>
+
+            <!-- Conversion Page -->
+            <div id="conversion-page" class="page">
+                <div class="page-header">
+                    <h2>Video Conversion & Optimization</h2>
+                    <p>Convert your videos between different formats and optimize for various uses</p>
+                </div>
+                
+                <div class="conversion-interface">
+                    <div class="conversion-header">
+                        <h3 class="conversion-title">FFmpeg Video Converter</h3>
+                        <button id="conversion-help-btn" class="btn btn-outline">Help</button>
+                    </div>
+                    
+                    <!-- Conversion Tabs -->
+                    <div class="conversion-tabs">
+                        <button class="conversion-tab active" data-tab="single">Single File</button>
+                        <button class="conversion-tab" data-tab="batch">Batch Convert</button>
+                        <button class="conversion-tab" data-tab="analysis">File Analysis</button>
+                    </div>
+                    
+                    <!-- Single File Conversion -->
+                    <div id="single-conversion" class="conversion-content active">
+                        <div class="file-input-section">
+                            <label class="file-input-label">Select Video File to Convert</label>
+                            <p class="file-input-description">Choose a video file from your computer or drag and drop it here</p>
+                            <input type="file" id="single-file-input" class="file-input" accept="video/*,audio/*" />
+                            <button id="single-file-select" class="file-select-button">Browse Files</button>
+                            <div id="single-selected-files" class="selected-files"></div>
+                        </div>
+                        
+                        <div class="conversion-settings">
+                            <div class="settings-group">
+                                <h4 class="settings-title">🎯 Conversion Preset</h4>
+                                <div class="preset-selector">
+                                    <label class="preset-label">Quality Preset:</label>
+                                    <select id="conversion-preset" class="preset-select">
+                                        <option value="balanced">Balanced (Recommended)</option>
+                                        <option value="high_quality">High Quality</option>
+                                        <option value="web_optimized">Web Optimized</option>
+                                        <option value="mobile_friendly">Mobile Friendly</option>
+                                        <option value="audio_only">Audio Only</option>
+                                    </select>
+                                    <p class="preset-description" id="preset-description">Good quality with reasonable file size</p>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-group">
+                                <h4 class="settings-title">📁 Output Settings</h4>
+                                <div class="output-settings">
+                                    <div class="output-group">
+                                        <label class="output-label">Output Directory:</label>
+                                        <div style="display: flex; gap: 8px;">
+                                            <input type="text" id="output-directory" class="output-input" placeholder="Select output directory..." readonly />
+                                            <button id="browse-output-btn" class="output-browse">Browse</button>
+                                        </div>
+                                    </div>
+                                    <div class="output-group">
+                                        <label class="output-label">Output Format:</label>
+                                        <select id="output-format" class="output-input">
+                                            <option value="mp4">MP4 (Recommended)</option>
+                                            <option value="avi">AVI</option>
+                                            <option value="mkv">MKV</option>
+                                            <option value="mov">MOV</option>
+                                            <option value="webm">WebM</option>
+                                            <option value="flv">FLV</option>
+                                            <option value="mp3">MP3 (Audio Only)</option>
+                                            <option value="aac">AAC (Audio Only)</option>
+                                            <option value="wav">WAV (Audio Only)</option>
+                                            <option value="flac">FLAC (Audio Only)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="advanced-options">
+                            <button class="advanced-toggle" id="advanced-toggle">
+                                ⚙️ Advanced Options <span class="toggle-icon">▼</span>
+                            </button>
+                            <div class="advanced-content" id="advanced-content">
+                                <div class="advanced-group">
+                                    <label class="output-label">Video Codec:</label>
+                                    <select id="video-codec" class="output-input">
+                                        <option value="libx264">H.264 (x264)</option>
+                                        <option value="libx265">H.265 (x265)</option>
+                                        <option value="libvpx-vp9">VP9</option>
+                                        <option value="copy">Copy (No Re-encoding)</option>
+                                    </select>
+                                </div>
+                                <div class="advanced-group">
+                                    <label class="output-label">Audio Codec:</label>
+                                    <select id="audio-codec" class="output-input">
+                                        <option value="aac">AAC</option>
+                                        <option value="libmp3lame">MP3</option>
+                                        <option value="libvorbis">Vorbis</option>
+                                        <option value="copy">Copy (No Re-encoding)</option>
+                                    </select>
+                                </div>
+                                <div class="advanced-group">
+                                    <label class="output-label">Video Bitrate (kbps):</label>
+                                    <input type="number" id="video-bitrate" class="output-input" placeholder="Auto" min="100" max="50000" />
+                                </div>
+                                <div class="advanced-group">
+                                    <label class="output-label">Audio Bitrate (kbps):</label>
+                                    <input type="number" id="audio-bitrate" class="output-input" placeholder="Auto" min="32" max="512" />
+                                </div>
+                                <div class="advanced-group">
+                                    <label class="output-label">Resolution:</label>
+                                    <select id="resolution" class="output-input">
+                                        <option value="">Keep Original</option>
+                                        <option value="1920x1080">1920x1080 (1080p)</option>
+                                        <option value="1280x720">1280x720 (720p)</option>
+                                        <option value="854x480">854x480 (480p)</option>
+                                        <option value="640x360">640x360 (360p)</option>
+                                    </select>
+                                </div>
+                                <div class="advanced-group">
+                                    <label class="output-label">Frame Rate (fps):</label>
+                                    <input type="number" id="frame-rate" class="output-input" placeholder="Auto" min="1" max="120" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="conversion-actions">
+                            <button id="analyze-file-btn" class="action-button analyze-files">
+                                🔍 Analyze File
+                            </button>
+                            <button id="start-single-conversion" class="action-button start-conversion" disabled>
+                                ▶️ Start Conversion
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Batch Conversion -->
+                    <div id="batch-conversion" class="conversion-content">
+                        <div class="file-input-section">
+                            <label class="file-input-label">Select Multiple Files for Batch Conversion</label>
+                            <p class="file-input-description">Choose multiple video files or drag and drop them here</p>
+                            <input type="file" id="batch-file-input" class="file-input" accept="video/*,audio/*" multiple />
+                            <button id="batch-file-select" class="file-select-button">Browse Files</button>
+                            <div id="batch-selected-files" class="selected-files"></div>
+                        </div>
+                        
+                        <div class="conversion-settings">
+                            <div class="settings-group">
+                                <h4 class="settings-title">🎯 Batch Conversion Settings</h4>
+                                <div class="preset-selector">
+                                    <label class="preset-label">Apply Preset to All Files:</label>
+                                    <select id="batch-preset" class="preset-select">
+                                        <option value="balanced">Balanced (Recommended)</option>
+                                        <option value="high_quality">High Quality</option>
+                                        <option value="web_optimized">Web Optimized</option>
+                                        <option value="mobile_friendly">Mobile Friendly</option>
+                                        <option value="audio_only">Audio Only</option>
+                                    </select>
+                                    <p class="preset-description" id="batch-preset-description">Good quality with reasonable file size</p>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-group">
+                                <h4 class="settings-title">📁 Batch Output Settings</h4>
+                                <div class="output-settings">
+                                    <div class="output-group">
+                                        <label class="output-label">Output Directory:</label>
+                                        <div style="display: flex; gap: 8px;">
+                                            <input type="text" id="batch-output-directory" class="output-input" placeholder="Select output directory..." readonly />
+                                            <button id="batch-browse-output-btn" class="output-browse">Browse</button>
+                                        </div>
+                                    </div>
+                                    <div class="output-group">
+                                        <label class="output-label">File Naming:</label>
+                                        <select id="batch-naming" class="output-input">
+                                            <option value="append">Append "_converted" to filename</option>
+                                            <option value="prefix">Prefix "converted_" to filename</option>
+                                            <option value="replace">Replace original files</option>
+                                            <option value="folder">Create subfolder for converted files</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="conversion-actions">
+                            <button id="start-batch-conversion" class="action-button start-conversion" disabled>
+                                ▶️ Start Batch Conversion
+                            </button>
+                            <button id="clear-batch-queue" class="action-button clear-queue">
+                                🗑️ Clear Queue
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- File Analysis -->
+                    <div id="analysis-conversion" class="conversion-content">
+                        <div class="file-input-section">
+                            <label class="file-input-label">Select File for Analysis</label>
+                            <p class="file-input-description">Analyze video file properties and metadata</p>
+                            <input type="file" id="analysis-file-input" class="file-input" accept="video/*,audio/*" />
+                            <button id="analysis-file-select" class="file-select-button">Browse Files</button>
+                            <div id="analysis-selected-files" class="selected-files"></div>
+                        </div>
+                        
+                        <div class="conversion-actions">
+                            <button id="start-analysis" class="action-button analyze-files" disabled>
+                                🔍 Analyze File
+                            </button>
+                        </div>
+                        
+                        <div id="analysis-results" class="analysis-results" style="display: none;">
+                            <!-- Analysis results will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Conversion Queue -->
+                    <div class="conversion-queue">
+                        <div class="queue-header">
+                            <h4 class="queue-title">Conversion Queue</h4>
+                            <div class="queue-stats">
+                                <div class="queue-stat">
+                                    <span class="stat-label">Total:</span>
+                                    <span id="queue-total">0</span>
+                                </div>
+                                <div class="queue-stat">
+                                    <span class="stat-label">Processing:</span>
+                                    <span id="queue-processing">0</span>
+                                </div>
+                                <div class="queue-stat">
+                                    <span class="stat-label">Completed:</span>
+                                    <span id="queue-completed">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="conversion-queue-items" class="queue-items">
+                            <div class="queue-empty">
+                                <div class="queue-empty-icon">📂</div>
+                                <p>No conversions in queue</p>
+                                <small>Add files above to start converting</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settings-page" class="page">
+                <div class="page-header">
+                    <h2>Settings</h2>
+                </div>
+                
+                <div class="settings-content">
+                    <div class="setting-group">
+                        <h3>Download Settings</h3>
+                        <div class="setting-item">
+                            <label for="download-quality">Default Video Quality:</label>
+                            <select id="download-quality">
+                                <option value="best">Best Available</option>
+                                <option value="1080p">1080p</option>
+                                <option value="720p">720p</option>
+                                <option value="480p">480p</option>
+                                <option value="360p">360p</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="download-format">Download Format:</label>
+                            <select id="download-format">
+                                <option value="mp4">MP4</option>
+                                <option value="webm">WebM</option>
+                                <option value="mkv">MKV</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="download-location">Download Location:</label>
+                            <div class="file-path-input">
+                                <input type="text" id="download-location" readonly />
+                                <button id="browse-location-btn" class="btn btn-secondary">Browse</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3>Component Updates</h3>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="auto-update-components" checked />
+                                Automatically check for component updates
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="auto-update-ytdl" checked />
+                                Automatically update yt-dlp
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="auto-update-ffmpeg" checked />
+                                Automatically update FFmpeg
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <button id="check-components-btn" class="btn btn-secondary">Check for Updates Now</button>
+                            <button id="manage-components-btn" class="btn btn-outline">Manage Components</button>
+                        </div>
+                        <div class="component-status">
+                            <div class="status-item">
+                                <span>yt-dlp:</span>
+                                <span id="ytdlp-version" class="version-info">Loading...</span>
+                                <span id="ytdlp-status" class="status-badge">Checking...</span>
+                            </div>
+                            <div class="status-item">
+                                <span>FFmpeg:</span>
+                                <span id="ffmpeg-version" class="version-info">Loading...</span>
+                                <span id="ffmpeg-status" class="status-badge">Checking...</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3>Application</h3>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="minimize-to-tray" />
+                                Minimize to system tray
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="start-minimized" />
+                                Start application minimized
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3>About</h3>
+                        <div class="about-info">
+                            <p>YouTube Playlist Manager v<span id="app-version">1.0.0</span></p>
+                            <p>A cross-platform desktop application for YouTube playlist management</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Advanced Playlist Creation Modal -->
+        <div id="playlist-creation-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Create Custom Playlist</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="playlist-creation-form">
+                        <div class="form-group">
+                            <label for="playlist-title">Playlist Name *</label>
+                            <input type="text" id="playlist-title" placeholder="My Awesome Playlist" required />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="playlist-description">Description</label>
+                            <textarea id="playlist-description" placeholder="Describe your playlist..." rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="playlist-category">Category</label>
+                            <select id="playlist-category">
+                                <option value="">Select Category (Optional)</option>
+                                <option value="Music">Music</option>
+                                <option value="Education">Education</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Gaming">Gaming</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Travel">Travel</option>
+                                <option value="Cooking">Cooking</option>
+                                <option value="Fitness">Fitness</option>
+                                <option value="Art">Art</option>
+                                <option value="Science">Science</option>
+                                <option value="News">News</option>
+                                <option value="Comedy">Comedy</option>
+                                <option value="DIY">DIY & Crafts</option>
+                                <option value="Lifestyle">Lifestyle</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="playlist-thumbnail">Custom Thumbnail</label>
+                            <div class="thumbnail-upload">
+                                <input type="file" id="playlist-thumbnail" accept="image/*" />
+                                <div class="thumbnail-preview" id="thumbnail-preview">
+                                    <span class="thumbnail-placeholder">📁</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="playlist-private" />
+                                Private Playlist
+                            </label>
+                            <small>Private playlists won't appear in search results</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="playlist-auto-download" />
+                                Auto-download new videos
+                            </label>
+                            <small>Automatically download videos when added to this playlist</small>
+                        </div>
+                        
+                        <div class="form-group" id="download-settings" style="display: none;">
+                            <label for="auto-download-quality">Auto-download Quality</label>
+                            <select id="auto-download-quality">
+                                <option value="best">Best Available</option>
+                                <option value="1080p">1080p</option>
+                                <option value="720p">720p</option>
+                                <option value="480p">480p</option>
+                                <option value="360p">360p</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="create-playlist-modal-btn" class="btn btn-primary">Create Playlist</button>
+                    <button class="btn btn-secondary modal-close">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for video preview/details -->
+        <div id="video-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal-video-title">Video Title</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="video-preview">
+                        <img id="modal-video-thumbnail" src="" alt="Video thumbnail" />
+                        <div class="video-info">
+                            <p id="modal-video-description">Video description...</p>
+                            <div class="video-metadata">
+                                <span id="modal-video-duration">Duration: --:--</span>
+                                <span id="modal-video-views">Views: ---</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="download-options">
+                        <h4>Download Options</h4>
+                        <div class="quality-selector">
+                            <label for="modal-quality-select">Quality:</label>
+                            <select id="modal-quality-select">
+                                <!-- Options populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="format-selector">
+                            <label for="modal-format-select">Format:</label>
+                            <select id="modal-format-select">
+                                <option value="mp4">MP4</option>
+                                <option value="webm">WebM</option>
+                                <option value="audio">Audio Only</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal-download-btn" class="btn btn-primary">Download</button>
+                    <button class="btn btn-secondary modal-close">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Video to Playlist Modal -->
+        <div id="add-video-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add Video to Playlist</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-video-form">
+                        <div class="form-group">
+                            <label for="video-url">YouTube Video URL *</label>
+                            <input type="url" id="video-url" required 
+                                placeholder="https://www.youtube.com/watch?v=..." />
+                            <div class="video-url-actions">
+                                <button type="button" id="fetch-video-info-btn" class="btn btn-secondary">
+                                    Fetch Video Info
+                                </button>
+                                <button type="button" id="preview-video-btn" class="btn btn-outline">
+                                    👁️ Full Preview
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="video-info-preview" class="video-info-preview" style="display: none;">
+                            <div class="video-preview-content">
+                                <img id="preview-thumbnail" src="" alt="Video thumbnail" />
+                                <div class="video-details">
+                                    <h4 id="preview-title">Video Title</h4>
+                                    <p id="preview-description">Video description...</p>
+                                    <div class="video-metadata">
+                                        <span id="preview-duration">Duration: --:--</span>
+                                        <span id="preview-views">Views: ---</span>
+                                        <span id="preview-upload-date">Uploaded: ---</span>
+                                    </div>
+                                    <p id="preview-uploader">Channel: ---</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="target-playlist">Select Playlist *</label>
+                            <select id="target-playlist" required>
+                                <option value="">Choose a playlist...</option>
+                                <!-- Options populated dynamically -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="auto-download-video" />
+                                Download this video immediately
+                            </label>
+                            <small>Download the video after adding it to the playlist</small>
+                        </div>
+                        
+                        <div class="form-group" id="video-download-settings" style="display: none;">
+                            <label>Download Quality</label>
+                            <div class="quality-selection-group">
+                                <button type="button" id="select-quality-btn" class="btn btn-secondary">
+                                    Select Quality & Format
+                                </button>
+                                <div class="selected-quality-info" id="selected-quality-info" style="display: none;">
+                                    <span class="quality-text" id="selected-quality-text">No quality selected</span>
+                                    <button type="button" id="change-quality-btn" class="btn btn-link">Change</button>
+                                </div>
+                            </div>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="video-audio-only">
+                                Audio Only
+                            </label>
+                        </div>
+                                <input type="checkbox" id="video-audio-only" />
+                                Audio only
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="add-video-btn" class="btn btn-primary" disabled>Add Video</button>
+                    <button class="btn btn-secondary modal-close">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Playlist Details Modal -->
+        <div id="playlist-details-modal" class="modal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h3 id="playlist-details-title">Playlist Name</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="playlist-details-content">
+                        <div class="playlist-info">
+                            <div class="playlist-meta">
+                                <img id="playlist-details-thumbnail" src="" alt="Playlist thumbnail" />
+                                <div class="playlist-metadata">
+                                    <p id="playlist-details-description">Playlist description...</p>
+                                    <div class="playlist-stats">
+                                        <span id="playlist-video-count">0 videos</span>
+                                        <span id="playlist-category">Category: Uncategorized</span>
+                                        <span id="playlist-created">Created: ---</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="playlist-actions">
+                                <button id="add-video-to-playlist-btn" class="btn btn-primary">
+                                    Add Video
+                                </button>
+                                <button id="download-all-videos-btn" class="btn btn-secondary">
+                                    Download All
+                                </button>
+                                <button id="edit-playlist-btn" class="btn btn-outline">
+                                    Edit Playlist
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="playlist-videos">
+                            <div class="playlist-toolbar">
+                                <div class="toolbar-left">
+                                    <h4>Videos in Playlist</h4>
+                                    <span id="video-count-badge" class="video-count-badge">0 videos</span>
+                                </div>
+                                <div class="toolbar-right">
+                                    <button id="select-mode-btn" class="btn btn-sm btn-outline">
+                                        Select
+                                    </button>
+                                    <button id="sort-btn" class="btn btn-sm btn-outline">
+                                        Sort ▼
+                                    </button>
+                                    <div id="sort-dropdown" class="sort-dropdown" style="display: none;">
+                                        <button data-sort="order">Default Order</button>
+                                        <button data-sort="title">Title (A-Z)</button>
+                                        <button data-sort="title-desc">Title (Z-A)</button>
+                                        <button data-sort="duration">Duration</button>
+                                        <button data-sort="date">Date Added</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="playlist-videos-list" class="videos-list">
+                                <!-- Videos will be populated dynamically by PlaylistVideoManager -->
+                            </div>
+                            
+                            <div id="bulk-action-bar" class="bulk-action-bar">
+                                <div class="bulk-info">
+                                    <span id="selected-count">0</span> videos selected
+                                </div>
+                                <div class="bulk-actions">
+                                    <button id="bulk-download-btn" class="btn btn-sm btn-primary">
+                                        Download Selected
+                                    </button>
+                                    <button id="bulk-remove-btn" class="btn btn-sm btn-danger">
+                                        Remove Selected
+                                    </button>
+                                    <button id="cancel-selection-btn" class="btn btn-sm btn-outline">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div id="confirm-modal" class="modal">
+            <div class="modal-content confirm-modal">
+                <div class="modal-header">
+                    <h3 id="confirm-title">Confirm Action</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="confirm-icon" class="confirm-icon">⚠️</div>
+                    <p id="confirm-message">Are you sure you want to perform this action?</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirm-cancel-btn" class="btn btn-outline modal-close">Cancel</button>
+                    <button id="confirm-ok-btn" class="btn btn-primary">Confirm</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Analysis Modal -->
+        <div id="analysis-modal" class="analysis-modal">
+            <div class="analysis-content">
+                <div class="analysis-header">
+                    <h3 class="analysis-title">Video File Analysis</h3>
+                    <button class="analysis-close">&times;</button>
+                </div>
+                <div class="analysis-body">
+                    <div class="analysis-section">
+                        <h4 class="analysis-section-title">📋 General Information</h4>
+                        <div class="analysis-grid">
+                            <div class="analysis-item">
+                                <span class="analysis-label">Filename:</span>
+                                <span class="analysis-value" id="analysis-filename">-</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Format:</span>
+                                <span class="analysis-value" id="analysis-format">-</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Duration:</span>
+                                <span class="analysis-value" id="analysis-duration">-</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">File Size:</span>
+                                <span class="analysis-value" id="analysis-filesize">-</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Overall Bitrate:</span>
+                                <span class="analysis-value" id="analysis-bitrate">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section" id="video-analysis-section">
+                        <h4 class="analysis-section-title">🎬 Video Stream</h4>
+                        <div class="analysis-grid">
+                            <div class="analysis-item">
+                                <span class="analysis-label">Codec:</span>
+                                <span class="analysis-value" id="analysis-video-codec">-</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Resolution:</span>
+                                <span class="analysis-value" id="analysis-resolution">-</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Frame Rate:</span>
+                                <span class="analysis-value" id="analysis-framerate">-</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Video Bitrate:</span>
+                                <span class="analysis-value" id="analysis-video-bitrate">-</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Pixel Format:</span>
+                                <span class="analysis-value" id="analysis-pixel-format">-</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Profile:</span>
+                                <span class="analysis-value" id="analysis-video-profile">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section" id="audio-analysis-section">
+                        <h4 class="analysis-section-title">🔊 Audio Stream</h4>
+                        <div class="analysis-grid">
+                            <div class="analysis-item">
+                                <span class="analysis-label">Codec:</span>
+                                <span class="analysis-value" id="analysis-audio-codec">-</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Sample Rate:</span>
+                                <span class="analysis-value" id="analysis-sample-rate">-</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Channels:</span>
+                                <span class="analysis-value" id="analysis-channels">-</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Audio Bitrate:</span>
+                                <span class="analysis-value" id="analysis-audio-bitrate">-</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Channel Layout:</span>
+                                <span class="analysis-value" id="analysis-channel-layout">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section" id="metadata-analysis-section">
+                        <h4 class="analysis-section-title">🏷️ Metadata</h4>
+                        <div id="analysis-metadata" class="analysis-grid">
+                            <!-- Metadata items will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Batch Configuration Modal -->
+        <div id="batch-config-modal" class="batch-config-modal">
+            <div class="batch-config-content">
+                <div class="batch-config-modal-header">
+                    <h3 class="batch-config-modal-title">Advanced Batch Download Settings</h3>
+                    <button class="batch-config-close">&times;</button>
+                </div>
+                <div class="batch-config-modal-body">
+                    <div class="batch-advanced-options">
+                        <button class="batch-advanced-toggle">
+                            ⚙️ Performance & Network Settings
+                            <span class="toggle-icon">▼</span>
+                        </button>
+                        <div class="batch-advanced-content">
+                            <div class="batch-option">
+                                <label class="batch-label">Max Retries per Video:</label>
+                                <select id="batch-max-retries" class="batch-select">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3" selected>3</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                            
+                            <div class="batch-option">
+                                <label class="batch-label">Timeout (seconds):</label>
+                                <input type="number" id="batch-timeout" class="batch-input" value="300" min="30" max="3600">
+                            </div>
+                            
+                            <div class="batch-option">
+                                <label class="batch-label">Rate Limit (MB/s):</label>
+                                <input type="number" id="batch-rate-limit" class="batch-input" placeholder="No limit" min="1" max="100">
+                                <small class="batch-help-text">Leave empty for no bandwidth limit</small>
+                            </div>
+                            
+                            <div class="batch-option">
+                                <label class="batch-label">Priority:</label>
+                                <select id="batch-priority" class="batch-select">
+                                    <option value="low">Low (Background)</option>
+                                    <option value="normal" selected>Normal</option>
+                                    <option value="high">High (Fast)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="batch-advanced-options">
+                        <button class="batch-advanced-toggle">
+                            📁 File Organization Settings
+                            <span class="toggle-icon">▼</span>
+                        </button>
+                        <div class="batch-advanced-content">
+                            <div class="batch-option">
+                                <label class="batch-label">File Naming Pattern:</label>
+                                <select id="batch-naming-pattern" class="batch-select">
+                                    <option value="title">Video Title</option>
+                                    <option value="title_id">Title - Video ID</option>
+                                    <option value="index_title">01 - Video Title</option>
+                                    <option value="custom">Custom Pattern</option>
+                                </select>
+                            </div>
+                            
+                            <div class="batch-option" id="custom-naming-option" style="display: none;">
+                                <label class="batch-label">Custom Pattern:</label>
+                                <input type="text" id="batch-custom-pattern" class="batch-input" placeholder="%(title)s - %(uploader)s">
+                                <small class="batch-help-text">Use yt-dlp naming patterns</small>
+                            </div>
+                            
+                            <div class="batch-checkbox-option">
+                                <input type="checkbox" id="batch-create-playlist-folders" class="batch-checkbox" checked>
+                                <label for="batch-create-playlist-folders" class="batch-checkbox-label">Create Playlist Folders</label>
+                            </div>
+                            
+                            <div class="batch-checkbox-option">
+                                <input type="checkbox" id="batch-download-thumbnails" class="batch-checkbox">
+                                <label for="batch-download-thumbnails" class="batch-checkbox-label">Download Thumbnails</label>
+                            </div>
+                            
+                            <div class="batch-checkbox-option">
+                                <input type="checkbox" id="batch-download-metadata" class="batch-checkbox">
+                                <label for="batch-download-metadata" class="batch-checkbox-label">Save Video Metadata</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="batch-actions" style="margin-top: 20px; justify-content: flex-end;">
+                        <button id="batch-config-cancel" class="batch-action-btn clear-batch-btn">Cancel</button>
+                        <button id="batch-config-save" class="batch-action-btn start-batch-btn">Save Settings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading overlay -->
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-spinner"></div>
+            <p id="loading-text">Loading...</p>
+        </div>
+
+        <!-- Error notification container -->
+        <div class="error-notification-container">
+            <div class="error-notifications" id="error-notifications"></div>
+        </div>
+    </div>
+
+    <script type="module" src="./quality-selection-bridge.ts"></script>
+    <script src="./scripts/ErrorManager.js"></script>
+    <script src="./scripts/PlaylistVideoManager.js"></script>
+    <script src="./scripts/SearchFilterManager.js"></script>
+    <script src="./scripts/FFmpegManager.js"></script>
+    <script src="./scripts/BatchDownloadManager.js"></script>
+    <script src="./scripts/VideoPreviewManager.js"></script>
+    <script src="./scripts/OfflineVideoManager.js"></script>
+    <script src="./scripts/PlaylistExportManager.js"></script>
+    <script src="./scripts/DuplicateManager.js"></script>
+    <script src="./scripts/main.js"></script>
+    <!-- Development testing only - remove in production -->
+    <script src="./scripts/test-error-handling.js"></script>
+</body>
+</html>

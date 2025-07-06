@@ -1,0 +1,675 @@
+/* Error Manager Styles */
+
+/* Error Notification Container */
+.error-notification-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 20000;
+    pointer-events: none;
+}
+
+.error-notifications {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    z-index: 20001;
+}
+
+/* Error Notification Styles */
+.error-notification {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+    opacity: 0;
+    pointer-events: auto;
+    max-width: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+.error-notification.error-notification-show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.error-notification.error-notification-hide {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+/* Error Severity Styles */
+.error-notification.error-error {
+    border-color: var(--error-color);
+    background: var(--error-bg);
+}
+
+.error-notification.error-warning {
+    border-color: var(--warning-color);
+    background: var(--warning-bg);
+}
+
+.error-notification.error-info {
+    border-color: var(--info-color);
+    background: var(--info-bg);
+}
+
+.error-notification.error-success {
+    border-color: var(--success-color);
+    background: var(--success-bg);
+}
+
+/* Error Notification Content */
+.error-notification-content {
+    padding: 16px;
+}
+
+.error-notification-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.error-notification-icon {
+    font-size: 20px;
+    min-width: 24px;
+    text-align: center;
+}
+
+.error-notification-title {
+    flex: 1;
+    font-weight: 600;
+    font-size: 1em;
+    color: var(--text-primary);
+}
+
+.error-notification-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.error-notification-retry,
+.error-notification-details,
+.error-notification-close {
+    background: none;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.error-notification-retry:hover,
+.error-notification-details:hover,
+.error-notification-close:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.error-notification-message {
+    color: var(--text-primary);
+    font-size: 0.9em;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.error-notification-retry-info {
+    font-size: 0.8em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.error-notification-time {
+    font-size: 0.75em;
+    color: var(--text-muted);
+    text-align: right;
+}
+
+.error-notification-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--accent-color);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* Error Category Specific Styles */
+.error-notification.error-category-network {
+    border-left: 4px solid #3498db;
+}
+
+.error-notification.error-category-youtube {
+    border-left: 4px solid #ff0000;
+}
+
+.error-notification.error-category-download {
+    border-left: 4px solid #e67e22;
+}
+
+.error-notification.error-category-database {
+    border-left: 4px solid #9b59b6;
+}
+
+.error-notification.error-category-filesystem {
+    border-left: 4px solid #34495e;
+}
+
+.error-notification.error-category-conversion {
+    border-left: 4px solid #f39c12;
+}
+
+/* Retry Notification */
+.retry-notification {
+    background: linear-gradient(90deg, var(--info-bg), var(--accent-bg));
+    border-color: var(--accent-color);
+}
+
+/* Error Details Modal */
+.error-details-modal {
+    z-index: 25000;
+}
+
+.error-details-content {
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.error-details-body {
+    padding: 0;
+}
+
+.error-details-info {
+    padding: 24px;
+}
+
+.error-details-section {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.error-details-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.error-details-section h4 {
+    margin: 0 0 16px 0;
+    color: var(--text-primary);
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.error-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.error-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.error-info-item label {
+    font-size: 0.85em;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.error-info-item span {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.error-details-message {
+    padding: 16px;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    border-left: 4px solid var(--accent-color);
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.error-technical-details {
+    position: relative;
+}
+
+.error-stack-trace {
+    width: 100%;
+    height: 200px;
+    padding: 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    resize: vertical;
+    min-height: 100px;
+    max-height: 400px;
+}
+
+.error-stack-trace:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.error-suggestions ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.error-suggestions li {
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.error-suggestions li:last-child {
+    margin-bottom: 0;
+}
+
+.error-details-footer {
+    padding: 16px 24px;
+    border-top: 2px solid var(--border-color);
+    background: var(--bg-secondary);
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+/* Error History Modal */
+.error-history-modal {
+    z-index: 25000;
+}
+
+.error-history-content {
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.error-history-body {
+    padding: 0;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.error-history-controls {
+    padding: 20px 24px;
+    border-bottom: 2px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+.error-history-filters {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.error-history-filter {
+    padding: 8px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 14px;
+    min-width: 150px;
+}
+
+.error-history-filter:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.error-history-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 24px;
+}
+
+.error-history-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+.error-history-empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.error-history-empty h4 {
+    margin: 0 0 8px 0;
+    color: var(--text-primary);
+}
+
+.error-history-empty p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.error-history-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 2px solid var(--border-light);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: var(--bg-primary);
+}
+
+.error-history-item:hover {
+    border-color: var(--accent-color);
+    background: var(--bg-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.error-history-item:last-child {
+    margin-bottom: 0;
+}
+
+.error-history-item.error-severity-error {
+    border-left: 4px solid var(--error-color);
+}
+
+.error-history-item.error-severity-warning {
+    border-left: 4px solid var(--warning-color);
+}
+
+.error-history-item.error-severity-info {
+    border-left: 4px solid var(--info-color);
+}
+
+.error-history-icon {
+    font-size: 24px;
+    min-width: 32px;
+    text-align: center;
+}
+
+.error-history-content {
+    flex: 1;
+}
+
+.error-history-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.error-history-message {
+    color: var(--text-muted);
+    font-size: 0.9em;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.error-history-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 0.8em;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+}
+
+.error-history-time {
+    color: var(--text-muted);
+}
+
+.error-history-category {
+    background: var(--bg-tertiary);
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.error-history-retries {
+    background: var(--warning-bg);
+    color: var(--warning-color);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+.error-history-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.error-history-item:hover .error-history-actions {
+    opacity: 1;
+}
+
+.error-history-actions .btn {
+    padding: 6px 8px;
+    min-width: auto;
+}
+
+/* CSS Variables for Error Colors */
+:root {
+    --error-color: #e74c3c;
+    --error-bg: rgba(231, 76, 60, 0.1);
+    --warning-color: #f39c12;
+    --warning-bg: rgba(243, 156, 18, 0.1);
+    --info-color: #3498db;
+    --info-bg: rgba(52, 152, 219, 0.1);
+    --success-color: #27ae60;
+    --success-bg: rgba(39, 174, 96, 0.1);
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] {
+    --error-bg: rgba(231, 76, 60, 0.15);
+    --warning-bg: rgba(243, 156, 18, 0.15);
+    --info-bg: rgba(52, 152, 219, 0.15);
+    --success-bg: rgba(39, 174, 96, 0.15);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .error-notifications {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+    
+    .error-notification {
+        max-width: none;
+    }
+    
+    .error-notification-header {
+        flex-wrap: wrap;
+    }
+    
+    .error-notification-actions {
+        margin-left: auto;
+    }
+    
+    .error-details-content,
+    .error-history-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    .error-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .error-history-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .error-history-filter {
+        min-width: auto;
+    }
+    
+    .error-history-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .error-history-meta {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .error-history-actions {
+        opacity: 1;
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .error-notifications {
+        top: 5px;
+        right: 5px;
+        left: 5px;
+    }
+    
+    .error-notification-content {
+        padding: 12px;
+    }
+    
+    .error-details-info {
+        padding: 16px;
+    }
+    
+    .error-details-section {
+        margin-bottom: 20px;
+    }
+    
+    .error-history-controls {
+        padding: 16px;
+    }
+    
+    .error-history-list {
+        padding: 12px 16px;
+    }
+    
+    .error-history-item {
+        padding: 12px;
+    }
+    
+    .error-stack-trace {
+        height: 150px;
+        font-size: 11px;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .error-notification,
+    .error-history-item {
+        transition: none;
+    }
+    
+    .error-notification.error-notification-show {
+        transform: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .error-notification,
+    .error-history-item {
+        border-width: 3px;
+    }
+    
+    .error-stack-trace {
+        border-width: 3px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .error-notification-container,
+    .error-details-modal,
+    .error-history-modal {
+        display: none !important;
+    }
+}
+
+/* Animation for retry notification */
+@keyframes retryPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.retry-notification .error-notification-icon {
+    animation: retryPulse 1s ease-in-out infinite;
+}
+
+/* Loading animation for error details */
+.error-details-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    color: var(--text-muted);
+}
+
+.error-details-loading::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-top: 2px solid var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Error notification entrance animations */
+.error-notification:nth-child(1) { animation-delay: 0ms; }
+.error-notification:nth-child(2) { animation-delay: 100ms; }
+.error-notification:nth-child(3) { animation-delay: 200ms; }
+.error-notification:nth-child(4) { animation-delay: 300ms; }
+.error-notification:nth-child(5) { animation-delay: 400ms; }

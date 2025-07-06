@@ -1,0 +1,728 @@
+/* Component Update Manager Styles */
+
+/* Update Modal Styles */
+.component-update-modal .modal-content {
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.update-modal-content {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.update-modal-body {
+    padding: 0;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
+/* Update Summary */
+.update-summary {
+    padding: 20px 24px;
+    background: var(--bg-secondary);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.update-summary p {
+    margin: 0;
+    font-size: 1.1em;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Component List */
+.update-components-list {
+    padding: 20px 24px;
+}
+
+.update-component-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border: 2px solid var(--border-light);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    background: var(--bg-primary);
+    transition: all 0.2s ease;
+}
+
+.update-component-item:hover {
+    border-color: var(--accent-color);
+    background: var(--bg-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.update-component-item:last-child {
+    margin-bottom: 0;
+}
+
+.component-info {
+    flex: 1;
+}
+
+.component-name {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.component-description {
+    font-size: 0.9em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.version-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+}
+
+.current-version {
+    color: var(--text-muted);
+    background: var(--bg-tertiary);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.version-arrow {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.latest-version {
+    color: var(--success-color);
+    background: var(--success-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-weight: 500;
+}
+
+.component-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.update-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--accent-color);
+}
+
+.update-checkbox-label {
+    font-size: 0.9em;
+    color: var(--text-primary);
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Update Options */
+.update-options {
+    padding: 20px 24px;
+    background: var(--bg-secondary);
+    border-top: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.update-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.update-option:last-child {
+    margin-bottom: 0;
+}
+
+.update-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent-color);
+}
+
+.update-option span {
+    color: var(--text-primary);
+    font-size: 0.9em;
+}
+
+/* Update Progress */
+.update-progress {
+    padding: 20px 24px;
+    background: var(--bg-tertiary);
+    border-top: 2px solid var(--border-color);
+}
+
+.progress-info {
+    margin-bottom: 12px;
+}
+
+#update-status {
+    font-size: 0.9em;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+    border-radius: 3px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+/* Update Modal Footer */
+.update-modal-footer {
+    padding: 16px 24px;
+    background: var(--bg-secondary);
+    border-top: 2px solid var(--border-color);
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.update-modal-footer .btn {
+    min-width: 100px;
+}
+
+/* Update History Modal */
+.update-history-modal .modal-content {
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+}
+
+.history-modal-content {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.history-modal-body {
+    padding: 0;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* History Controls */
+.history-controls {
+    padding: 20px 24px;
+    background: var(--bg-secondary);
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.history-stats {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+    color: var(--text-muted);
+}
+
+.clear-history-btn {
+    min-width: 120px;
+}
+
+/* History List */
+.history-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+    max-height: 50vh;
+}
+
+.history-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    font-size: 1.1em;
+}
+
+.history-item {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1.5fr;
+    gap: 16px;
+    align-items: center;
+    padding: 16px;
+    border: 2px solid var(--border-light);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    background: var(--bg-primary);
+    transition: all 0.2s ease;
+}
+
+.history-item:hover {
+    border-color: var(--accent-color);
+    background: var(--bg-hover);
+}
+
+.history-item:last-child {
+    margin-bottom: 0;
+}
+
+.history-component {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.history-version {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.85em;
+    color: var(--text-muted);
+}
+
+.history-status {
+    font-weight: 500;
+    text-transform: capitalize;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.8em;
+}
+
+.history-date {
+    font-size: 0.8em;
+    color: var(--text-muted);
+}
+
+.history-error {
+    grid-column: 1 / -1;
+    font-size: 0.8em;
+    color: var(--error-color);
+    background: var(--error-bg);
+    padding: 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+/* Status-specific styling */
+.history-item.status-success .history-status {
+    background: var(--success-bg);
+    color: var(--success-color);
+}
+
+.history-item.status-failed .history-status {
+    background: var(--error-bg);
+    color: var(--error-color);
+}
+
+.history-item.status-cancelled .history-status {
+    background: var(--warning-bg);
+    color: var(--warning-color);
+}
+
+/* Settings Panel in Update Modal */
+.update-settings-panel {
+    padding: 20px 24px;
+    background: var(--bg-tertiary);
+    border-top: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.update-settings-title {
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.update-setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.update-setting-item:last-child {
+    margin-bottom: 0;
+}
+
+.update-setting-label {
+    flex: 1;
+    font-size: 0.9em;
+    color: var(--text-primary);
+}
+
+.update-setting-description {
+    font-size: 0.8em;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.update-setting-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Update Notification Styles */
+.update-notification {
+    border-left: 4px solid var(--info-color);
+    background: var(--info-bg);
+}
+
+.update-notification-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.update-notification-action {
+    padding: 4px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: all 0.2s ease;
+}
+
+.update-notification-action:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent-color);
+}
+
+.update-notification-action.primary {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.update-notification-action.primary:hover {
+    background: var(--accent-hover);
+}
+
+/* Component Status Indicators */
+.component-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.component-status.up-to-date {
+    background: var(--success-bg);
+    color: var(--success-color);
+}
+
+.component-status.update-available {
+    background: var(--warning-bg);
+    color: var(--warning-color);
+}
+
+.component-status.updating {
+    background: var(--info-bg);
+    color: var(--info-color);
+}
+
+.component-status.error {
+    background: var(--error-bg);
+    color: var(--error-color);
+}
+
+.component-status-icon {
+    font-size: 0.9em;
+}
+
+/* Update Badge for Navigation */
+.update-badge {
+    position: relative;
+}
+
+.update-badge::after {
+    content: attr(data-count);
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--error-color);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    border: 2px solid var(--bg-primary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .component-update-modal .modal-content,
+    .update-history-modal .modal-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    .update-component-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .component-actions {
+        align-self: flex-end;
+    }
+    
+    .version-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .version-arrow {
+        display: none;
+    }
+    
+    .history-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .history-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        text-align: left;
+    }
+    
+    .history-status {
+        text-align: left;
+        display: inline-block;
+        width: fit-content;
+    }
+    
+    .update-modal-footer {
+        flex-direction: column;
+    }
+    
+    .update-modal-footer .btn {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    
+    .update-modal-footer .btn:last-child {
+        margin-bottom: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .update-modal-body,
+    .history-modal-body {
+        max-height: 70vh;
+    }
+    
+    .update-summary,
+    .update-components-list,
+    .update-options,
+    .history-controls,
+    .history-list {
+        padding: 16px;
+    }
+    
+    .update-component-item,
+    .history-item {
+        padding: 12px;
+    }
+    
+    .component-name {
+        font-size: 1.1em;
+    }
+    
+    .version-info {
+        font-size: 0.8em;
+    }
+}
+
+/* Dark Theme Adjustments */
+[data-theme="dark"] {
+    --update-hover-bg: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .update-component-item:hover,
+[data-theme="dark"] .history-item:hover {
+    background: var(--update-hover-bg);
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .update-component-item,
+    .history-item,
+    .progress-fill {
+        transition: none;
+    }
+    
+    .update-component-item:hover,
+    .history-item:hover {
+        transform: none;
+    }
+}
+
+@media (prefers-contrast: high) {
+    .update-component-item,
+    .history-item,
+    .update-options,
+    .history-controls {
+        border-width: 3px;
+    }
+    
+    .progress-bar {
+        border-width: 2px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .component-update-modal,
+    .update-history-modal {
+        display: none !important;
+    }
+}
+
+/* Loading Animation for Update Progress */
+@keyframes updateProgress {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.progress-fill.updating {
+    background: linear-gradient(
+        90deg,
+        var(--accent-color) 0%,
+        var(--accent-hover) 50%,
+        var(--accent-color) 100%
+    );
+    background-size: 200px 100%;
+    animation: updateProgress 2s linear infinite;
+}
+
+/* Component Update Status in Settings */
+.component-update-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.component-update-info {
+    flex: 1;
+}
+
+.component-update-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.component-update-subtitle {
+    font-size: 0.9em;
+    color: var(--text-muted);
+}
+
+.component-update-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.component-update-actions .btn {
+    min-width: 100px;
+}
+
+/* Update Settings Quick Access */
+.update-quick-settings {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.update-quick-settings.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.update-quick-toggle {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.update-quick-toggle:hover {
+    background: var(--accent-hover);
+    transform: scale(1.05);
+}
+
+.update-quick-toggle.has-updates {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        box-shadow: 0 4px 16px var(--accent-color);
+    }
+}

@@ -1,0 +1,70 @@
+END USER LICENSE AGREEMENT
+
+YOUTUBE PLAYLIST MANAGER
+
+IMPORTANT: PLEASE READ THIS LICENSE AGREEMENT CAREFULLY BEFORE INSTALLING OR USING THE SOFTWARE.
+
+This End User License Agreement ("Agreement") is a legal agreement between you (either an individual or a single entity) and YouTube Playlist Manager for the software product identified above, which includes computer software and may include associated media, printed materials, and "online" or electronic documentation ("Software").
+
+BY INSTALLING, COPYING, OR OTHERWISE USING THE SOFTWARE, YOU AGREE TO BE BOUND BY THE TERMS OF THIS AGREEMENT. IF YOU DO NOT AGREE TO THE TERMS OF THIS AGREEMENT, DO NOT INSTALL OR USE THE SOFTWARE.
+
+1. GRANT OF LICENSE
+
+Subject to the terms and conditions of this Agreement, YouTube Playlist Manager grants you a non-exclusive, non-transferable license to use the Software for personal, non-commercial purposes.
+
+2. RESTRICTIONS
+
+You may not:
+- Modify, adapt, alter, translate, or create derivative works of the Software
+- Reverse engineer, disassemble, decompile, or otherwise attempt to derive the source code of the Software
+- Remove, alter, or obscure any copyright, trademark, or other proprietary rights notices
+- Use the Software for any commercial purposes without explicit written permission
+- Distribute, rent, lease, or sublicense the Software to any third party
+
+3. INTELLECTUAL PROPERTY
+
+The Software is protected by copyright laws and international copyright treaties, as well as other intellectual property laws and treaties. YouTube Playlist Manager retains all rights, title, and interest in and to the Software.
+
+4. THIRD-PARTY COMPONENTS
+
+The Software may include third-party components that are subject to separate license terms. These components include but are not limited to:
+- yt-dlp (Unlicense/Public Domain)
+- FFmpeg (LGPL 2.1)
+- Electron (MIT License)
+- SQLite (Public Domain)
+
+You agree to comply with all applicable third-party license terms.
+
+5. DATA AND PRIVACY
+
+The Software may collect anonymous usage statistics to improve the user experience. No personal information or downloaded content is transmitted or stored remotely without your explicit consent.
+
+6. DISCLAIMER OF WARRANTIES
+
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+
+7. LIMITATION OF LIABILITY
+
+IN NO EVENT SHALL YOUTUBE PLAYLIST MANAGER BE LIABLE FOR ANY DAMAGES (INCLUDING, WITHOUT LIMITATION, LOST PROFITS, BUSINESS INTERRUPTION, OR LOST INFORMATION) RISING OUT OF YOUR USE OF OR INABILITY TO USE THE SOFTWARE.
+
+8. YOUTUBE TERMS OF SERVICE
+
+You acknowledge that your use of YouTube content through this Software must comply with YouTube's Terms of Service. This Software is not affiliated with, endorsed by, or sponsored by YouTube or Google.
+
+9. TERMINATION
+
+This Agreement is effective until terminated. You may terminate it at any time by destroying all copies of the Software. It will also terminate if you fail to comply with any term or condition of this Agreement.
+
+10. GOVERNING LAW
+
+This Agreement shall be governed by and construed in accordance with the laws of [Jurisdiction], without regard to its conflict of laws principles.
+
+11. ENTIRE AGREEMENT
+
+This Agreement constitutes the entire agreement between you and YouTube Playlist Manager regarding the Software and supersedes all prior or contemporaneous understandings.
+
+By using the Software, you acknowledge that you have read this Agreement, understand it, and agree to be bound by its terms and conditions.
+
+Copyright © 2025 YouTube Playlist Manager. All rights reserved.
+
+Last updated: January 2025
