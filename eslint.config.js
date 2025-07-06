@@ -1,0 +1,96 @@
+const js = require('@eslint/js');
+const tseslint = require('@typescript-eslint/eslint-plugin');
+const tsparser = require('@typescript-eslint/parser');
+
+module.exports = [
+  js.configs.recommended,
+  {
+    files: ['**/*.{js,ts}'],
+    languageOptions: {
+      parser: tsparser,
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: {
+        // Node.js globals for main process
+        require: 'readonly',
+        module: 'readonly',
+        exports: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        process: 'readonly',
+        Buffer: 'readonly',
+        global: 'readonly',
+        console: 'readonly',
+        URL: 'readonly',
+        // Browser globals for renderer process
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        location: 'readonly',
+        alert: 'readonly',
+        confirm: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        setTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearTimeout: 'readonly',
+        clearInterval: 'readonly',
+        Event: 'readonly',
+        fetch: 'readonly',
+        Blob: 'readonly',
+        FileReader: 'readonly',
+        // DOM types
+        HTMLElement: 'readonly',
+        HTMLInputElement: 'readonly',
+        HTMLSelectElement: 'readonly',
+        HTMLButtonElement: 'readonly',
+        HTMLImageElement: 'readonly',
+        Element: 'readonly',
+        MouseEvent: 'readonly',
+        KeyboardEvent: 'readonly',
+        // Electron globals
+        electronAPI: 'readonly',
+        // Application-specific globals
+        FFmpegManager: 'readonly',
+        VideoPreviewManager: 'readonly',
+        BatchDownloadManager: 'readonly',
+        OfflineVideoManager: 'readonly',
+        PlaylistExportManager: 'readonly',
+        ErrorManager: 'readonly',
+        SearchFilterManager: 'readonly',
+        ComponentUpdateManager: 'readonly',
+        PlaylistVideoManager: 'readonly',
+        downloadSingleVideo: 'readonly',
+        removeVideoFromPlaylist: 'readonly',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-non-null-assertion': 'warn',
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-case-declarations': 'off',
+      'no-dupe-class-members': 'off',
+      'no-unreachable': 'error',
+      'no-useless-catch': 'warn',
+    },
+  },
+  {
+    ignores: [
+      'dist/',
+      'build/',
+      'node_modules/',
+      '.github/',
+      'scripts/',
+      'Research/',
+      'context/',
+      'Workflows/',
+      'dist-packages/',
+      'package-lock.json',
+    ],
+  },
+];

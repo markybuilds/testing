@@ -3,10 +3,14 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.pnpm-debug.log*
 
 # Build outputs
 dist/
+dist-packages/
 build/
+out/
+release/
 *.tsbuildinfo
 
 # Environment variables
@@ -24,6 +28,7 @@ build/
 .Trashes
 ehthumbs.db
 Thumbs.db
+*.lnk
 
 # IDE files
 .vscode/
@@ -31,10 +36,17 @@ Thumbs.db
 *.swp
 *.swo
 *~
+.project
+.classpath
+.settings/
 
 # Logs
 logs/
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
 
 # Runtime data
 pids/
@@ -44,6 +56,7 @@ pids/
 
 # Coverage directory used by tools like istanbul
 coverage/
+*.lcov
 
 # nyc test coverage
 .nyc_output/
@@ -51,8 +64,14 @@ coverage/
 # Dependency directories
 jspm_packages/
 
-# Optional npm cache directory
+# Package managers
 .npm
+.pnpm-store/
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
 
 # Optional REPL history
 .node_repl_history
@@ -63,16 +82,72 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
+# ESLint cache
+.eslintcache
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Jest cache
+.jest/
+
 # Application specific
 database/
+databases/
 downloads/
 temp/
 cache/
+user-data/
+app-data/
 
-# Binaries
+# Binaries and executables
 binaries/
 ffmpeg*
 yt-dlp*
+youtube-dl*
 
-# User data
-user-data/
+# Electron specific
+app/dist/
+app/build/
+app/release/
+
+# Windows specific
+*.exe
+*.msi
+*.appx
+desktop.ini
+
+# macOS specific
+*.dmg
+*.pkg
+*.app
+
+# Linux specific
+*.AppImage
+*.deb
+*.rpm
+*.snap
+*.tar.gz
+*.flatpak
+
+# Test files
+test-results/
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+
+# Configuration overrides
+config.local.json
+settings.local.json

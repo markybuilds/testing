@@ -3,7 +3,7 @@
  * Cross-platform application packaging and distribution
  */
 
-const path = require('path');
+const { execSync } = require('child_process');
 
 module.exports = {
   appId: 'com.ytplaylistmanager.app',
@@ -51,7 +51,6 @@ module.exports = {
   asar: true,
   asarUnpack: [
     'node_modules/better-sqlite3/**/*',
-    'node_modules/node-pty/**/*',
     'binaries/**/*'
   ],
   
@@ -84,8 +83,6 @@ module.exports = {
     icon: 'assets/icon.ico',
     requestedExecutionLevel: 'asInvoker',
     signingHashAlgorithms: ['sha256'],
-    certificateFile: process.env.WINDOWS_CERTIFICATE_FILE,
-    certificatePassword: process.env.WINDOWS_CERTIFICATE_PASSWORD,
     publisherName: 'YouTube Playlist Manager',
     verifyUpdateCodeSignature: false,
     artifactName: '${productName}-${version}-${arch}.${ext}'
@@ -136,9 +133,6 @@ module.exports = {
     entitlements: 'build-resources/entitlements.mac.plist',
     entitlementsInherit: 'build-resources/entitlements.mac.plist',
     provisioningProfile: process.env.MACOS_PROVISIONING_PROFILE,
-    notarize: {
-      teamId: process.env.APPLE_TEAM_ID
-    },
     artifactName: '${productName}-${version}-${arch}.${ext}'
   },
   
@@ -244,7 +238,6 @@ module.exports = {
   rpm: {
     packageCategory: 'Applications/Multimedia',
     vendor: 'YouTube Playlist Manager',
-    license: 'MIT',
     depends: [
       'libnotify',
       'libappindicator',

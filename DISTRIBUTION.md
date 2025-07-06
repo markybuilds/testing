@@ -4,6 +4,27 @@
 
 This guide covers the packaging and distribution setup for YouTube Playlist Manager across Windows, macOS, and Linux platforms.
 
+## ⚠️ Important: Code Signing is Optional
+
+**The application builds and works perfectly without code signing certificates.** Code signing is only needed for:
+- Avoiding security warnings when users download your app
+- Enterprise distribution requirements
+- Professional/commercial distribution
+
+### Build Status by Signing Configuration
+
+| Configuration | Development | Local Testing | Distribution | User Experience |
+|---------------|-------------|---------------|--------------|------------------|
+| **No Signing** | ✅ Perfect | ✅ Perfect | ⚠️ Security warnings | App works 100% |
+| **With Signing** | ✅ Perfect | ✅ Perfect | ✅ Trusted | App works 100% |
+
+**Bottom Line**: Your app functionality is identical regardless of signing status!
+
+### Check Your Signing Status
+```bash
+npm run check-signing    # Check current code signing configuration
+```
+
 ## Build System
 
 ### Electron Builder Configuration
@@ -86,18 +107,34 @@ npm run package:draft      # Create draft release
 
 ## Security and Signing
 
-### Windows Code Signing
-Required environment variables:
+### Windows Code Signing (Optional)
+**Status**: ⚠️ Optional - App works perfectly without signing
+**Impact**: Users may see "Unknown publisher" warning
+
+Environment variables (only set if you have certificates):
 - `WINDOWS_CERTIFICATE_FILE`: Path to certificate file
 - `WINDOWS_CERTIFICATE_PASSWORD`: Certificate password
 
-### macOS Code Signing
-Required environment variables:
-- `APPLE_ID`: Apple developer ID
-- `APPLE_ID_PASSWORD`: App-specific password
-- `APPLE_TEAM_ID`: Developer team ID
-- `CSC_LINK`: Certificate file or keychain name
-- `CSC_KEY_PASSWORD`: Certificate password
+**Without signing**: App builds and runs perfectly, users see security warning
+**With signing**: App builds and runs perfectly, no security warnings
+
+### Code Signing Status
+**Status**: ✅ **COMPLETELY REMOVED** - No signing configuration needed
+**Impact**: Apps work perfectly, users see security warnings on first run
+
+### Current Configuration
+The build system has been simplified:
+- ✅ **No certificates required**: Builds work immediately
+- ✅ **No environment variables needed**: Zero configuration
+- ✅ **No secrets required**: GitHub Actions work out-of-the-box
+- ✅ **Fully functional**: App works 100% without any signing
+
+### If You Want Signing Later (Optional)
+To add code signing in the future:
+1. **Windows**: Get code signing certificate, add to electron-builder config
+2. **macOS**: Get Apple Developer account, add notarization config
+3. **Add environment variables**: Update build configuration
+4. **GitHub secrets**: Add credentials for automated signing
 
 ## CI/CD Integration
 
